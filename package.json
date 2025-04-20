@@ -1,7 +1,25 @@
 {
   "dependencies": {
-    "@vant/weapp": "^1.11.6",
+    "@vant/weapp": "^1.11.7",
     "mobx-miniprogram": "^6.12.3",
     "mobx-miniprogram-bindings": "^3.0.0"
-  }
+  },
+  "name": "smart-home-control-wechat-mini-program",
+  "version": "1.0.0",
+  "description": "### 项目简介 基于微信小程序原生开发的智能居家监控系统,实现在小程序端查看当前家中设备情况以及进行控制。",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rozen-a/Smart-Home-Control-WeChat-Mini-Program.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rozen-a/Smart-Home-Control-WeChat-Mini-Program/issues"
+  },
+  "homepage": "https://github.com/Rozen-a/Smart-Home-Control-WeChat-Mini-Program#readme"
 }

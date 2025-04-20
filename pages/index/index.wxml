@@ -1,0 +1,97 @@
+<view>
+  <!-- 头部部分 -->
+  <!-- <view class="header">
+    <image src="/images/head.jpg" mode="" />
+    <view class="text">{{ title }}</view>
+  </view> -->
+  <!-- 天气UI部分 -->
+  <view class="weather">
+    <view class="title">
+      <text>{{ welcome }}</text>
+    </view>
+    <view class="content">
+      <view class="left">
+        <image src="{{ weatherImgUrl }}" mode="scaleToFill" />
+      </view>
+      <view class="right">
+        <view class="local">
+          <image src="/images/map.png" mode="widthFix" />
+          <text>{{ location }}</text>
+        </view>
+        <view class="temperature">
+          <text>{{ temperature }}℃</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- MQTT UI部分 -->
+  <view class="mqtt" bind:tap="mqttConnectHandle">
+    <view class="left">
+      <van-icon name="{{ mqttActionSheet ? 'arrow-down' : 'arrow-up' }}" style="margin-right: 10rpx;" />
+      <text>MQTT服务器</text>
+    </view>
+    <view class="right">
+      <view class="state" style="color: {{ isConnect ? '#00b26a' : 'red' }};">
+        {{ isConnect ? '已连接' : '未连接' }}
+      </view>
+    </view>
+  </view>
+  <!-- 底部弹窗 -->
+  <van-action-sheet title="MQTT服务器" show="{{ mqttActionSheet }}" bind:close="onClose">
+    <van-toast id="van-toast" />
+    <!-- 连接 -->
+    <view style="height: 1040rpx;" class="action-sheet">
+      <van-cell-group>
+        <van-field model:value="{{ address }}" required clearable label="Address" placeholder="请输入地址" />
+        <van-field model:value="{{ port }}" required clearable label="Port" placeholder="请输入端口号" />
+        <van-field model:value="{{ username }}" required clearable label="Username" placeholder="请输入用户名" />
+        <van-field model:value="{{ password }}" type="password" label="Password" placeholder="请输入密码" required />
+        <view class="btn-style">
+          <van-button size="small" custom-class="connect" color="{{ !isConnect ? '#96b9ff' : '#d9d9d9' }}" disabled="{{ isConnect }}" bind:click="connectHandle">连接</van-button>
+          <van-button size="small" custom-class="disconnect" color="{{ isConnect ? '#96b9ff' : '#d9d9d9' }}" disabled="{{ !isConnect }}" bind:click="disConnectHandle">断开</van-button>
+        </view>
+      </van-cell-group>
+      <!-- 订阅 -->
+      <view class="subscribe">
+        <van-cell-group>
+          <view class="text">
+            订阅Topic
+          </view>
+          <van-field model:value="{{ subscribeAddr }}" placeholder="请输入订阅地址" />
+          <view class="btn-style">
+            <van-button size="small" custom-class="connect" color="{{ !isSubscribe ? '#96b9ff' : '#d9d9d9' }}" disabled="{{ isSubscribe }}" bind:click="subscribeHandle">订阅</van-button>
+            <van-button size="small" custom-class="disconnect" color="{{ isSubscribe ? '#96b9ff' : '#d9d9d9' }}" disabled="{{ !isSubscribe }}" bind:click="disSubscribeHandle">取消</van-button>
+          </view>
+        </van-cell-group>
+      </view>
+      <!-- 发布 -->
+      <view class="publish">
+        <van-cell-group>
+          <view class="text">
+            发布Topic
+          </view>
+          <van-field model:value="{{ publishAddr }}" placeholder="请输入发布地址" />
+          <view class="btn-style">
+            <van-button size="small" custom-class="connect" color="{{ !isPublish ? '#96b9ff' : '#d9d9d9' }}" disabled="{{ isPublish }}" bind:click="publishHandle">发布</van-button>
+            <van-button size="small" custom-class="disconnect" color="{{ isPublish ? '#96b9ff' : '#d9d9d9' }}" disabled="{{ !isPublish }}" bind:click="disPublishHandle">修改</van-button>
+          </view>
+        </van-cell-group>
+      </view>
+    </view>
+  </van-action-sheet>
+
+  <view wx:if="{{ isConnect }}">
+    <!-- 传感器设备 -->
+    <view class="sensor">
+      <view class="title">传感器设备</view>
+      <my-sensor bind:changeLimit="limitHandle" sensorList="{{ sensorList }}"></my-sensor>
+    </view>
+
+    <!-- 其他设备 -->
+    <view class="device">
+      <view class="title">其他设备</view>
+      <my-device bind:onSwitch="onSwitch" otherSensorList="{{ otherSensorList }}"></my-device>
+    </view>
+  </view>
+</view>

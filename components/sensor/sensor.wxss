@@ -1,0 +1,50 @@
+/* components/sensor/sensor.wxss */
+.sensor {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.sensor-item {
+  margin-bottom: 24rpx;
+  padding: 20rpx;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-sizing: border-box;
+  width: 340rpx;
+  height: 220rpx;
+  background-color: #ffffff;
+  border-radius: 32rpx;
+  box-shadow: 4rpx 4rpx 16rpx rgba(0, 0, 0, 0.4);
+}
+
+.sensor-item .left {
+  width: 120rpx;
+  height: 100rpx;
+}
+
+.sensor-item:nth-child(1) .left {
+  padding: 30rpx;
+}
+
+.sensor-item:nth-child(2) .left {
+  padding: 20rpx;
+}
+
+.sensor-item .img {
+  /* width: 100rpx; */
+  height: 100rpx;
+  margin-right: 40rpx;
+}
+
+.sensor-item .right {
+  width: 45%;
+}
+
+.sensor-item .box {
+  margin-bottom: 14rpx;
+  font-size: 34rpx;
+  font-weight: 460;
+}

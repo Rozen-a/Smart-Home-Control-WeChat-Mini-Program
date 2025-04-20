@@ -1,0 +1,18 @@
+<!--index.wxml-->
+<view>
+  <van-dropdown-menu>
+    <van-dropdown-item bind:change="onChange" value="{{ value }}" options="{{ option }}" />
+    <van-dropdown-item id="item" title="{{ itemTitle }}">
+      <van-datetime-picker show-toolbar="{{ false }}" type="date" value="{{ currentDate }}" bind:input="onInput" min-date="{{ minDate }}" formatter="{{ formatter }}" max-date="{{ maxDate }}" />
+    </van-dropdown-item>
+  </van-dropdown-menu>
+</view>
+
+<view class="date-style">
+  {{ dateString }} 当天数据
+</view>
+<view>
+  <view class="container">
+  <ec-canvas wx:if="{{!isDisposed}}" id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>
+  </view>
+</view>

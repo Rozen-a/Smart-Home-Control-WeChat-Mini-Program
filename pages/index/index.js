@@ -84,9 +84,17 @@ Page({
   // 更改开关状态
   onSwitch(e) {
     console.log(e.detail);
+    // 更新页面状态
     this.setData({
       [`otherSensorList[${e.detail}].isOpen`]: !this.data.otherSensorList[e.detail].isOpen
     })
+
+    // 保存到本地存储，使定时控制页面能够获取最新状态
+    try {
+      wx.setStorageSync('deviceList', JSON.stringify(this.data.otherSensorList));
+    } catch (e) {
+      console.error('保存设备状态失败', e);
+    }
   },
 
   // 更具天气显示相对于的天气图片
@@ -288,6 +296,21 @@ Page({
    */
   onLoad: function (options) {
     this.getUserLocation()
+
+    // 初始化设备列表存储
+    try {
+      // 检查是否已有存储的设备列表
+      const cachedDevices = wx.getStorageSync('deviceList');
+      if (!cachedDevices) {
+        // 如果没有，则初始化存储
+        wx.setStorageSync('deviceList', JSON.stringify(this.data.otherSensorList));
+      } else {
+        // 如果有，则使用存储的数据更新页面
+        this.setData({ otherSensorList: JSON.parse(cachedDevices) });
+      }
+    } catch (e) {
+      console.error('初始化设备列表存储失败', e);
+    }
   },
 
   /**
@@ -301,7 +324,18 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    // 获取最新的设备状态，同步变更
+    try {
+      const cachedDevices = wx.getStorageSync('deviceList');
+      if (cachedDevices) {
+        // 解析存储的设备列表数据（将存储的 JSON 字符串转换回 JavaScript 对象）
+        const deviceList = JSON.parse(cachedDevices);
+        // 更新首页的设备状态
+        this.setData({ otherSensorList: deviceList });
+      }
+    } catch (e) {
+      console.error('获取设备列表失败', e);
+    }
   },
 
   /**

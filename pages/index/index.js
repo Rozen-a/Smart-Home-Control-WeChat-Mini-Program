@@ -92,6 +92,13 @@ Page({
     // 保存到本地存储，使定时控制页面能够获取最新状态
     try {
       wx.setStorageSync('deviceList', JSON.stringify(this.data.otherSensorList));
+
+      // 通知定时管理器设备状态已变更
+      if (this.timerManager) {
+        const device = this.data.otherSensorList[e.detail];
+        const app = getApp();
+        app.updateDeviceStatus(device, device.isOpen);
+      }
     } catch (e) {
       console.error('保存设备状态失败', e);
     }
@@ -310,6 +317,27 @@ Page({
       }
     } catch (e) {
       console.error('初始化设备列表存储失败', e);
+    }
+
+    // 获取定时管理器实例
+    this.timerManager = getApp().getTimerManager();
+  
+    // 设置回调，当设备状态改变时更新页面
+    if (this.timerManager) {
+      this.timerManager.setCallbacks({
+        onDeviceControl: (device, state) => {
+          // 更新页面显示的设备状态
+          const { otherSensorList } = this.data;
+          const updatedDeviceList = otherSensorList.map(item => {
+            if (item.name === device.name) {
+              return { ...item, isOpen: state };
+            }
+            return item;
+          });
+          
+          this.setData({ otherSensorList: updatedDeviceList });
+        }
+      });
     }
   },
 

@@ -38,6 +38,12 @@ Component({
         "text": "记录",
         "iconPath": "/images/record.png",
         "selectedIconPath": "/images/record-active.png"
+      },
+      {
+        "pagePath": "/pages/timer/timer",
+        "text": "定时",
+        "iconPath": "",
+        "selectedIconPath": ""
       }
     ]
   },

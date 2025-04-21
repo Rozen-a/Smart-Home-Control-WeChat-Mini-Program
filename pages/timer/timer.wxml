@@ -1,0 +1,155 @@
+<!--pages/timer/timer.wxml-->
+<view class="container">
+  <van-toast id="van-toast" />
+  <van-dialog id="van-dialog" />
+
+  <!-- 顶部卡片 -->
+  <view class="card header-card">
+    <view class="card-title">定时控制</view>
+    <view class="card-subtitle">可对智能设备进行定时和倒计时控制</view>
+  </view>
+
+  <!-- 定时/倒计时切换 -->
+  <van-tabs active="{{ activeTab }}" bind:change="onTabChange" sticky>
+    <van-tab title="定时">
+      <!-- 定时控制表单 -->
+      <view class="card form-card">
+        <van-cell-group>
+          <!-- 设备选择 -->
+          <van-cell title="选择设备" value="{{ selectedDevice.name || '请选择' }}" is-link bind:click="showDevicePopup" />
+          
+          <!-- 开启时间 -->
+          <van-cell title="开启时间" value="{{ startTimeText || '不设置' }}" is-link bind:click="showStartTimePicker" />
+          
+          <!-- 关闭时间 -->
+          <van-cell title="关闭时间" value="{{ endTimeText || '不设置' }}" is-link bind:click="showEndTimePicker" />
+          
+          <!-- 创建按钮 -->
+          <view class="btn-container">
+            <van-button type="primary" block round bind:click="createScheduleTimer">创建定时</van-button>
+          </view>
+        </van-cell-group>
+      </view>
+    </van-tab>
+    
+    <van-tab title="倒计时">
+      <!-- 倒计时控制表单 -->
+      <view class="card form-card">
+        <van-cell-group>
+          <!-- 设备选择 -->
+          <van-cell title="选择设备" value="{{ selectedDevice.name || '请选择' }}" is-link bind:click="showDevicePopup" />
+          
+          <!-- 倒计时时间 -->
+          <van-cell title="倒计时时长">
+            <view class="countdown-input">
+              <van-field
+                value="{{ countdownMinutes }}"
+                type="number"
+                placeholder="请输入分钟数"
+                bind:change="onCountdownMinutesChange"
+              />
+              <text class="unit">分钟</text>
+            </view>
+          </van-cell>
+          
+          <!-- 创建按钮 -->
+          <view class="btn-container">
+            <van-button type="primary" block round bind:click="createCountdownTimer">创建倒计时</van-button>
+          </view>
+        </van-cell-group>
+      </view>
+    </van-tab>
+  </van-tabs>
+
+  <!-- 设备选择弹出层 -->
+  <van-popup
+    show="{{ showDevicePopup }}"
+    position="bottom"
+    round
+    custom-style="height: 50%"
+    bind:close="hideDevicePopup"
+  >
+    <view class="popup-title">选择设备</view>
+    <van-cell-group>
+      <block wx:for="{{ deviceList }}" wx:key="name">
+        <van-cell 
+          title="{{ item.name }}" 
+          clickable 
+          data-index="{{ index }}"
+          bind:click="selectDevice"
+        >
+          <image slot="icon" src="{{ item.img }}" class="device-icon" />
+        </van-cell>
+      </block>
+    </van-cell-group>
+  </van-popup>
+
+  <!-- 开启时间选择器 -->
+  <van-popup
+    show="{{ showStartTimePicker }}"
+    position="bottom"
+    bind:close="hideStartTimePicker"
+  >
+    <van-datetime-picker
+      type="time"
+      value="{{ startTime }}"
+      bind:confirm="onStartTimeConfirm"
+      bind:cancel="hideStartTimePicker"
+    />
+  </van-popup>
+
+  <!-- 关闭时间选择器 -->
+  <van-popup
+    show="{{ showEndTimePicker }}"
+    position="bottom"
+    bind:close="hideEndTimePicker"
+  >
+    <van-datetime-picker
+      type="time"
+      value="{{ endTime }}"
+      bind:confirm="onEndTimeConfirm"
+      bind:cancel="hideEndTimePicker"
+    />
+  </van-popup>
+
+  <!-- 已创建定时器列表 -->
+  <view class="card timers-card" wx:if="{{ timerList.length > 0 }}">
+    <view class="card-title">已创建定时</view>
+    <van-cell-group>
+      <block wx:for="{{ timerList }}" wx:key="id">
+        <van-swipe-cell right-width="{{ 65 }}">
+          <van-cell>
+            <view slot="title">
+              <view class="timer-title">{{ item.device.name }}</view>
+              <view class="timer-info">
+                <block wx:if="{{ item.type === 'schedule' }}">
+                  <block wx:if="{{ item.startTimeText }}">
+                    <text>开启: {{ item.startTimeText }}</text>
+                  </block>
+                  <block wx:if="{{ item.endTimeText }}">
+                    <text>关闭: {{ item.endTimeText }}</text>
+                  </block>
+                </block>
+                <block wx:else>
+                  <text>倒计时: {{ item.countdownMinutes }}分钟</text>
+                  <text class="countdown-remaining" wx:if="{{ item.remainingTime > 0 }}">
+                    剩余: {{ item.remainingTimeText }}
+                  </text>
+                </block>
+              </view>
+            </view>
+            <view slot="right-icon" class="timer-status {{ item.active ? 'active' : '' }}">
+              {{ item.active ? '启用中' : '已完成' }}
+            </view>
+          </van-cell>
+          <view slot="right" class="delete-btn" data-id="{{ item.id }}" bindtap="deleteTimer">删除</view>
+        </van-swipe-cell>
+      </block>
+    </van-cell-group>
+  </view>
+  
+  <view class="empty-tips" wx:else>
+    <image src="/images/empty.png" class="empty-img"></image>
+    <text>暂无定时任务，快去创建吧</text>
+  </view>
+</view>

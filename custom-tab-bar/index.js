@@ -42,8 +42,8 @@ Component({
       {
         "pagePath": "/pages/timer/timer",
         "text": "定时",
-        "iconPath": "",
-        "selectedIconPath": ""
+        "iconPath": "/images/timer.png",
+        "selectedIconPath": "/images/timer-active.png"
       }
     ]
   },

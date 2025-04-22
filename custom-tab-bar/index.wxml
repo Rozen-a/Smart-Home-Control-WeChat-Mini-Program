@@ -11,8 +11,8 @@
     记录
   </van-tabbar-item>
   <van-tabbar-item>
-    <image slot="icon" src="" mode="aspectFit" style="width: 40px; height: 28px;" />
-    <image slot="icon-active" src="" mode="aspectFit" style="width: 40px; height: 28px;" />
+    <image slot="icon" src="/images/timer.png" mode="aspectFit" style="width: 40px; height: 28px;" />
+    <image slot="icon-active" src="/images/timer-active.png" mode="aspectFit" style="width: 40px; height: 28px;" />
     定时
   </van-tabbar-item>
 </van-tabbar>

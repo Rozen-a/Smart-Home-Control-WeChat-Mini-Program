@@ -149,7 +149,7 @@
   </view>
   
   <view class="empty-tips" wx:else>
-    <image src="/images/empty.png" class="empty-img"></image>
+    <!-- <image src="/images/empty.png" class="empty-img"></image> -->
     <text>暂无定时任务，快去创建吧</text>
   </view>
 </view>
